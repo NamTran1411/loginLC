@@ -1,0 +1,65 @@
+{
+  "Login": {
+    "title": "Login to your Pocket.vn account to connect with the application",
+    "title_qr": "Scan to login",
+    "time": "Expires in:",
+    "expired_code": "Code expired, try again later",
+    "code_QR": "QR Code",
+    "account": "Account",
+    "forgot_password": "Forgot your password?",
+    "email": "Username",
+    "email_placeholder": "Enter your username",
+    "password": "Password",
+    "password_placeholder": "Enter your password",
+    "error_password_space": "Please do not leave this empty",
+    "error_email_space": "Please do not leave this empty",
+    "error_email_format": "The email address is invalid.",
+    "button_login": "Login",
+    "title_register": "Don't have an account?",
+    "button_register": "Register now",
+    "button_reload": "Reload"
+  },
+  "ForgotPassword": {
+    "email": "Username",
+    "email_placeholder": "Enter your username",
+    "error_email_space": "Please do not leave this empty",
+    "error_email_format": "The email address is invalid.",
+    "button_next": "Next"
+  },
+  "VerifyForgotPassword": {
+    "button_reload": "Resend code",
+    "button_next": "Next",
+    "title": "Verify OTP code",
+    "expired_code": "Code expired, try again later"
+  },
+  "VerifyEmail": {
+    "button_reload": "Resend code",
+    "button_next": "Next",
+    "title": "Verify OTP code",
+    "expired_code": "Code expired, try again later"
+  },
+  "ResetPassword": {
+    "password_new": "New Password",
+    "password_new_placeholder": "Enter your password",
+    "button_next": "Next",
+    "confirm_password": "Confirm Password",
+    "confirm_password_placeholder": "Re-enter your password",
+    "error_password_space": "Please do not leave this empty",
+    "error_password_dissimilarity": "The confirmed password does not match",
+    "error_password_format": "The password must contain 1 uppercase letter, a number, and a special character !@#$%^&*,.... with a minimum of 8 characters."
+  },
+  "Register": {
+    "email": "Username",
+    "email_placeholder": "Enter your username",
+    "error_email_space": "Please do not leave this empty",
+    "error_email_format": "The email address is invalid.",
+    "password_new": "Password",
+    "password_new_placeholder": "Enter your password",
+    "button_next": "Next",
+    "confirm_password": "Confirm Password",
+    "confirm_password_placeholder": "Re-enter your password",
+    "error_password_space": "Please do not leave this empty",
+    "error_password_dissimilarity": "The confirmed password does not match",
+    "error_password_format": "The password must contain 1 uppercase letter, a number, and a special character `!@#$%^&*,....` with a minimum of 8 characters."
+  }
+}
