@@ -44,17 +44,36 @@ const LIST_ROUTERS = [
 export default function Dashboard() {
   return (
     <section className="container">
-      <div className="grid grid-cols-3 gap-[30px]">
-        {LIST_ROUTERS.map((items, index: number) => {
+      <div className="flex justify-center items-center gap-[30px] mb-[30px]">
+        {LIST_ROUTERS.slice(0, 3).map((items, index: number) => {
           return (
             <div
               key={index}
-              className="rounded-[18px] p-6 bg-[#1F1F1F] border-2 border-[#434343] shadow-[0px 2px 8px 0px rgba(0, 0, 0, 0.15)]"
+              className="rounded-[18px] p-6 bg-[#1F1F1F] border-2 border-[#434343] shadow-[0px 2px 8px 0px rgba(0, 0, 0, 0.15)] group hover:border-[#13C2C2] w-[180px]"
             >
               <div className="w-[50px] h-[50px] mb-9">
                 <Image src={items?.icon} alt="" width={1000} height={1000} />
               </div>
-              <div className="font-semibold text-base">{items?.title}</div>
+              <div className="font-semibold text-base group-hover:text-[#13C2C2]">
+                {items?.title}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="flex justify-center items-center gap-[30px]">
+        {LIST_ROUTERS.slice(3, 6).map((items, index: number) => {
+          return (
+            <div
+              key={index}
+              className="rounded-[18px] p-6 bg-[#1F1F1F] border-2 border-[#434343] shadow-[0px 2px 8px 0px rgba(0, 0, 0, 0.15)] group hover:border-[#13C2C2] w-[180px]"
+            >
+              <div className="w-[50px] h-[50px] mb-9">
+                <Image src={items?.icon} alt="" width={1000} height={1000} />
+              </div>
+              <div className="font-semibold text-base group-hover:text-[#13C2C2]">
+                {items?.title}
+              </div>
             </div>
           );
         })}

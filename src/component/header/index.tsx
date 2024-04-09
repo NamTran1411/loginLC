@@ -28,8 +28,8 @@ const ListMenu = [
 const Header: React.FC = () => {
   return (
     <header>
-      <nav className="backdrop-blur-3xl">
-        <div className="flex justify-between  items-center container mx-auto gap-3">
+      <nav className="backdrop-blur-xl">
+        <div className="flex justify-between px-4 py-5 items-center container mx-auto gap-3">
           <Link href={"/"}>
             <div className="flex gap-2 items-center">
               <svg

@@ -1,10 +1,11 @@
 "use client";
-import BarLoader from "@/component/loading";
 import { emailPattern } from "@/utils/config";
 import { Eye, EyeSlash } from "iconsax-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChangeEvent, useState } from "react";
+import LoginForm from "./action";
+import BarLoader from "@/component/loading";
 
 interface FormDataSubmit {
   email: string;
@@ -49,14 +50,14 @@ export default function Home() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Ngăn form submit theo cách truyền thống
     setLoading(true);
-    // const formData = new FormData(event.currentTarget);
-    // await LoginForm(formData)
-    //   .then((res) => {
-    //     setStatusMessage(res?.message);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    const formData = new FormData(event.currentTarget);
+    await LoginForm(formData)
+      .then((res) => {
+        setStatusMessage(res?.message);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     setLoading(false);
   };
 
