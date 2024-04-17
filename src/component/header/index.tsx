@@ -1,31 +1,41 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import Delete from "./logout";
+import { usePathname } from "next/navigation";
 
-const ListMenu = [
-  {
-    id: 1,
-    name: "HOME",
-    link: "/",
-  },
-  {
-    id: 2,
-    name: "SERVICES",
-    link: "/trip",
-  },
-  // {
-  //   id: 3,
-  //   name: "Tin tức",
-  //   link: "/news",
-  // },
-  {
-    id: 4,
-    name: "CONTACT US",
-    link: "/products",
-  },
-];
+// const ListMenu = [
+//   {
+//     id: 1,
+//     name: "HOME",
+//     link: "/",
+//   },
+//   {
+//     id: 2,
+//     name: "SERVICES",
+//     link: "/trip",
+//   },
+//   // {
+//   //   id: 3,
+//   //   name: "Tin tức",
+//   //   link: "/news",
+//   // },
+//   {
+//     id: 4,
+//     name: "CONTACT US",
+//     link: "/products",
+//   },
+// ];
 
 const Header: React.FC = () => {
+  const pathname = usePathname();
+  console.log("🚀 ~  pathname:", pathname);
+  const handleLogout = async () => {
+    try {
+      await Delete();
+    } catch (error) {}
+  };
   return (
     <header>
       <nav className="backdrop-blur-xl">
@@ -45,7 +55,7 @@ const Header: React.FC = () => {
             </div>
           </Link>
 
-          <ul className="flex justify-center items-center" style={{ gap: "24px" }}>
+          {/* <ul className="flex justify-center items-center" style={{ gap: "24px" }}>
             {ListMenu?.map((items) => (
               <li key={items?.id}>
                 <Link href={items.link}>
@@ -53,10 +63,15 @@ const Header: React.FC = () => {
                 </Link>
               </li>
             ))}
-            <button className="bg-[#13C2C2] rounded-md px-[20px] py-[10px] font-medium text-base">
-              Login
+          </ul> */}
+          {pathname === "/dashboard" && (
+            <button
+              className="bg-[#13C2C2] rounded-md px-[20px] py-[10px] font-medium text-base"
+              onClick={handleLogout}
+            >
+              Logout
             </button>
-          </ul>
+          )}
         </div>
       </nav>
     </header>

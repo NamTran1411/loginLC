@@ -1,7 +1,9 @@
 import { Bg_1, Bg_2, Bg_3 } from "@/assets/home";
 import Header from "@/component/header";
 import "@/style/globals.css";
+import { cookies } from "next/headers";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 export default async function MainLayout({
