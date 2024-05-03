@@ -5,15 +5,15 @@ pipeline {
         nodejs "nodejs"
     }
 
-    stages {
+    stages { // Một khối stages bao gồm nhiều khối stage
         stage("install") {
-            steps {
-                sh 'npm install'
+            steps { // Một khối stage tương ứng với một giai đoạn trong pypline
+                sh 'yarn'
             }
         }
         stage("build") {
             steps {
-                sh 'npm run build'
+                sh 'yarn run build'
             }
         }
     }
