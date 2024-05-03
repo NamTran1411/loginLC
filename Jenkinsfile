@@ -5,9 +5,9 @@ pipeline {
         nodejs "nodejs"
     }
 
-    stages { // Một khối stages bao gồm nhiều khối stage
+    stages {
         stage("install") {
-            steps { // Một khối stage tương ứng với một giai đoạn trong pypline
+            steps {
                 sh 'npm install'
             }
         }
