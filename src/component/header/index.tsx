@@ -30,7 +30,6 @@ import { usePathname } from "next/navigation";
 
 const Header: React.FC = () => {
   const pathname = usePathname();
-  console.log("🚀 ~  pathname:", pathname);
   const handleLogout = async () => {
     try {
       await Delete();
