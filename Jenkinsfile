@@ -15,7 +15,7 @@ pipeline {
             steps {
                 sh 'npm run build'
             }
-        }`
+        }
     }
 
     post {
