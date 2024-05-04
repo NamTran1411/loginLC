@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 //   {
 //     id: 1,
 //     name: "HOME",
-//     link: "/",
+//     link: "/",s
 //   },
 //   {
 //     id: 2,
