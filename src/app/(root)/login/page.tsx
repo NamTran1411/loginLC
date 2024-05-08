@@ -80,7 +80,7 @@ export default function Home() {
         <div className="bg-white rounded-2xl p-[20px] lg:w-[394px]">
           <h2 className="text-black font-semibold text-[20px] mb-[20px]">
             Vui lòng đăng nhập để
-            <br /> sử dụng a
+            <br /> sử dụng
           </h2>
           <form onSubmit={handleSubmit}>
             <div className="box-border-form">
