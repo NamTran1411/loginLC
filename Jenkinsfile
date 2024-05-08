@@ -8,7 +8,7 @@ pipeline {
     stages {
          stage("Clone stage") {
             steps {
-               git credentialsId :'test-jenkins' ,url:'git@github.com:NamTran1411/loginLC.git'
+               sh 'git pull origin main'
             }
         }
         stage("build") {
