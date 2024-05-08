@@ -10,10 +10,9 @@ pipeline {
          stage ("SSH Agent"){
                steps {
                 sshagent(['ssh-agent-admin']) {
-                sh 'ssh -o StrictHostKeyChecking=no -l adminlc 192.168.64.2 touch text.txt'
-                sh 'git pull git@github.com:NamTran1411/loginLC.git'
-                sh 'npm install build'
-                sh 'pm2 restart all'
+                sh 'ssh -o StrictHostKeyChecking=no -l adminlc 192.168.64.2'
+                sh 'pm2 start npm --name loginLC -- start'
+                sh 'ftp 192.168.64.2'
             }
          }
          }
