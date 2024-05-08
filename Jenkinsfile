@@ -6,17 +6,9 @@ pipeline {
     }
 
     stages {
-
-         stage ("SSH Agent"){
-               steps {
-             sshagent(['ssh-remote']) {
-                sh 'ssh -o StrictHostKeyChecking=no -l adminlc 192.168.64.2 touch text.txt'
-            }
-         }
-         }
-        stage("install") {
+         stage("Clone stage") {
             steps {
-                sh 'npm install'
+               git credentialsId :'test-jenkins' ,url:'git@github.com:NamTran1411/loginLC.git'
             }
         }
         stage("build") {
@@ -24,6 +16,14 @@ pipeline {
                 sh 'npm run build'
             }
         }
+         stage ("SSH Agent"){
+            steps {
+             sshagent(['ssh-remote']) {
+                sh 'ssh -o StrictHostKeyChecking=no -l adminlc 192.168.64.2 touch text.txt'
+            }
+         }
+         }
+
     }
 
     post {
