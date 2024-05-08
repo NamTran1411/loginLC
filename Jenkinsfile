@@ -10,11 +10,13 @@ pipeline {
          stage ("SSH Agent"){
                steps {
                 sshagent(['ssh-agent-admin']) {
-                sh 'ssh -o StrictHostKeyChecking=no -l adminlc 192.168.64.2'
-                sh 'cd /var/www/loginLC'
-                sh 'pm2 reload all'
-                 sh 'cd'
-                sh 'ftp 192.168.64.2'
+               def remoteCommands = """
+                            cd /var/www/loginLC
+                            pm2 reload all
+                            cd
+                            ftp 192.168.64.2
+                            exit
+                """
             }
          }
          }
