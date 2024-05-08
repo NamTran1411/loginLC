@@ -6,13 +6,11 @@ pipeline {
     }
 
     stages {
+
          stage ("SSH Agent"){
-               steps('SSH server') {
-             sshagent(['ssh-agent']) {
-                sh 'ssh -o StrictHostKeyChecking=no -l cloudbees 192.168.64.2 loginLC -a'
-                sh 'git pull git@github.com:NamTran1411/loginLC.git'
-                sh 'npm install build'
-                sh 'pm2 restart all'
+               steps {
+             sshagent(['ssh-remote']) {
+                sh 'ssh -o StrictHostKeyChecking=no -l adminlc 192.168.64.2 touch text.txt'
             }
          }
          }
