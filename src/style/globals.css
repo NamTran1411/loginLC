@@ -157,3 +157,12 @@ header {
   width: 100%;
   z-index: 9999999999;
 }
+
+.border-confirm-email {
+  border-width: 2px !important;
+  border-color: #13c2c2 !important;
+}
+.border-confirm-email:hover {
+  border-width: 2px !important;
+  border-color: #13c2c2 !important;
+}

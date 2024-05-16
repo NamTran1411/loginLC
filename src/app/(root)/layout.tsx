@@ -14,7 +14,7 @@ export default async function MainLayout({
   return (
     <main className="relative h-full min-h-screen flex justify-center items-center overflow-hidden">
       <Header />
-      <Suspense fallback={<>Loading...</>}>{children}</Suspense>
+      <Suspense>{children}</Suspense>
 
       <div className="bg_hidden_top_left">
         <Image src={Bg_3?.src} alt="" width={1000} height={1000} />

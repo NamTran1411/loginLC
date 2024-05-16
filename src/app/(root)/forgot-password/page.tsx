@@ -1,28 +1,21 @@
 "use client";
-import { emailPattern } from "@/utils/config";
-import { Eye, EyeSlash } from "iconsax-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
-import LoginForm from "./action";
 import BarLoader from "@/component/loading";
-import { cookieValue } from "@/utils/cookie";
-import Delete from "@/component/header/logout";
+import { emailPattern } from "@/utils/config";
+import { ArrowLeft } from "iconsax-react";
+import { usePathname } from "next/navigation";
+import { ChangeEvent, useState } from "react";
+import LoginForm from "./action";
 
 interface FormDataSubmit {
   email: string;
   password: string;
 }
 
-export default function Home() {
+export default function ForgotPassword() {
   const pathname = usePathname();
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormDataSubmit>({ email: "", password: "" });
   const [loading, setLoading] = useState<boolean>(false);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
   const [statusMessage, setStatusMessage] = useState<string>("");
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.setCustomValidity("");
@@ -35,15 +28,6 @@ export default function Home() {
       event.target.setCustomValidity("Không bỏ trống");
     } else if (!emailPattern.test(email)) {
       event.target.setCustomValidity("Sai định dạng");
-    } else {
-      event.target.setCustomValidity("");
-    }
-  };
-
-  const validatePassword = (event: React.FocusEvent<HTMLInputElement>) => {
-    const password = event.target.value;
-    if (!password) {
-      event.target.setCustomValidity("Không bỏ trống");
     } else {
       event.target.setCustomValidity("");
     }
@@ -63,15 +47,6 @@ export default function Home() {
     setLoading(false);
   };
 
-  const handleLogout = async () => {
-    try {
-      await Delete();
-    } catch (error) {}
-  };
-  useEffect(() => {
-    handleLogout();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cookieValue?.value]);
   return (
     <section>
       <div className="flex justify-center gap-[80px] container mx-auto">
@@ -89,22 +64,26 @@ export default function Home() {
           </button>
         </div>
         <div className="bg-white rounded-2xl p-[20px] lg:w-[394px]">
-          <h2 className="text-black font-semibold text-[20px] mb-[20px]">
-            Vui lòng đăng nhập để
-            <br /> sử dụng
-          </h2>
+          <div className="flex gap-[8px] mb-[20px]">
+            <ArrowLeft size="24" color="#13C2C2" />
+            <div className="text-[#13C2C2] font-medium text-[16px]">Trở lại</div>
+          </div>
+          <h2 className="text-black font-semibold text-[20px] ">Quên mật khẩu</h2>
+          <p className="text-[#8C8C8C] text-[16px] mt-3 mb-[20px]">
+            Vui lòng nhập email của bạn để đặt lại mật khẩu
+          </p>
           <form onSubmit={handleSubmit}>
             <div className="box-border-form">
               <div className="form-group">
                 <label htmlFor="email" className="title-form flex">
-                  <span>User name</span>
+                  <span>Your Email</span>
                   <div className="text-[#FF4D4F]">*</div>
                 </label>
                 <input
                   type="text"
                   name="email"
                   className="form-control"
-                  placeholder="User name "
+                  placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleChange}
                   onBlur={validateEmail}
@@ -112,48 +91,10 @@ export default function Home() {
                   required
                 />
               </div>
-              <div className="form-group my-[20px]">
-                <label htmlFor="idEmail" className="title-form flex">
-                  <span>Password</span>
-                  <div className="text-[#FF4D4F]">*</div>
-                </label>
-                <div className="flex items-center justify-between w-full relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    className="form-control"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    onBlur={validatePassword}
-                    onInput={(event) => event.currentTarget.setCustomValidity("")}
-                    required
-                  />
-                  {showPassword ? (
-                    <Eye
-                      size="14"
-                      color="#141414"
-                      onClick={togglePasswordVisibility}
-                      className="cursor-pointer icon_show_password"
-                    />
-                  ) : (
-                    <EyeSlash
-                      size="14"
-                      color="#141414"
-                      onClick={togglePasswordVisibility}
-                      className="cursor-pointer icon_show_password"
-                    />
-                  )}
-                </div>
-              </div>
-              <Link href={`/forgot-password`}>
-                <div className="text-center cursor-pointer text-[#13C2C2] font-normal text-sm">
-                  Forgot password?
-                </div>
-              </Link>
+
               <div className="status-error">{statusMessage}</div>
               <button type="submit" className="button-submit" disabled={loading}>
-                {loading ? <BarLoader /> : <span>Login</span>}
+                {loading ? <BarLoader /> : <span>Đặt lại mật khẩu </span>}
               </button>
             </div>
           </form>

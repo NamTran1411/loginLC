@@ -1,6 +1,6 @@
 "use client";
 import { emailPattern } from "@/utils/config";
-import { Eye, EyeSlash } from "iconsax-react";
+import { ArrowLeft, Eye, EyeSlash } from "iconsax-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -10,16 +10,16 @@ import { cookieValue } from "@/utils/cookie";
 import Delete from "@/component/header/logout";
 
 interface FormDataSubmit {
-  email: string;
   password: string;
+  confirm_password: string;
 }
 
 export default function Home() {
   const pathname = usePathname();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [formData, setFormData] = useState<FormDataSubmit>({ email: "", password: "" });
+  const [formData, setFormData] = useState<FormDataSubmit>({ confirm_password: "", password: "" });
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -27,6 +27,13 @@ export default function Home() {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.setCustomValidity("");
     setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
+  const handleChangeConfirm = (event: ChangeEvent<HTMLInputElement>) => {
+    event.target.setCustomValidity("");
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
+  const togglePasswordConfirm = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const validateEmail = (event: ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +55,14 @@ export default function Home() {
       event.target.setCustomValidity("");
     }
   };
+  const validatePasswordConfirm = (event: React.FocusEvent<HTMLInputElement>) => {
+    const confirm_password = event.target.value;
+    if (!confirm_password) {
+      event.target.setCustomValidity("Không bỏ trống");
+    } else {
+      event.target.setCustomValidity("");
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Ngăn form submit theo cách truyền thống
@@ -63,15 +78,6 @@ export default function Home() {
     setLoading(false);
   };
 
-  const handleLogout = async () => {
-    try {
-      await Delete();
-    } catch (error) {}
-  };
-  useEffect(() => {
-    handleLogout();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cookieValue?.value]);
   return (
     <section>
       <div className="flex justify-center gap-[80px] container mx-auto">
@@ -89,29 +95,15 @@ export default function Home() {
           </button>
         </div>
         <div className="bg-white rounded-2xl p-[20px] lg:w-[394px]">
+          <div className="flex gap-[8px] mb-[20px]">
+            <ArrowLeft size="24" color="#13C2C2" />
+            <div className="text-[#13C2C2] font-medium text-[16px]">Trở lại</div>
+          </div>
           <h2 className="text-black font-semibold text-[20px] mb-[20px]">
-            Vui lòng đăng nhập để
-            <br /> sử dụng
+            Đặt mật khẩu mới của bạn
           </h2>
           <form onSubmit={handleSubmit}>
             <div className="box-border-form">
-              <div className="form-group">
-                <label htmlFor="email" className="title-form flex">
-                  <span>User name</span>
-                  <div className="text-[#FF4D4F]">*</div>
-                </label>
-                <input
-                  type="text"
-                  name="email"
-                  className="form-control"
-                  placeholder="User name "
-                  value={formData.email}
-                  onChange={handleChange}
-                  onBlur={validateEmail}
-                  onInput={(event) => event.currentTarget.setCustomValidity("")}
-                  required
-                />
-              </div>
               <div className="form-group my-[20px]">
                 <label htmlFor="idEmail" className="title-form flex">
                   <span>Password</span>
@@ -146,14 +138,44 @@ export default function Home() {
                   )}
                 </div>
               </div>
-              <Link href={`/forgot-password`}>
-                <div className="text-center cursor-pointer text-[#13C2C2] font-normal text-sm">
-                  Forgot password?
+              <div className="form-group">
+                <label htmlFor="idEmail" className="title-form flex">
+                  <span>Password</span>
+                  <div className="text-[#FF4D4F]">*</div>
+                </label>
+                <div className="flex items-center justify-between w-full relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="confirm_password"
+                    className="form-control"
+                    placeholder="Password"
+                    value={formData.confirm_password}
+                    onChange={handleChangeConfirm}
+                    onBlur={validatePasswordConfirm}
+                    onInput={(event) => event.currentTarget.setCustomValidity("")}
+                    required
+                  />
+                  {showConfirmPassword ? (
+                    <Eye
+                      size="14"
+                      color="#141414"
+                      onClick={togglePasswordConfirm}
+                      className="cursor-pointer icon_show_password"
+                    />
+                  ) : (
+                    <EyeSlash
+                      size="14"
+                      color="#141414"
+                      onClick={togglePasswordConfirm}
+                      className="cursor-pointer icon_show_password"
+                    />
+                  )}
                 </div>
-              </Link>
+              </div>
+
               <div className="status-error">{statusMessage}</div>
               <button type="submit" className="button-submit" disabled={loading}>
-                {loading ? <BarLoader /> : <span>Login</span>}
+                {loading ? <BarLoader /> : <span>Cập nhật mật khẩu</span>}
               </button>
             </div>
           </form>
