@@ -20,6 +20,8 @@ export default function Home() {
   const [formData, setFormData] = useState<FormDataSubmit>({ confirm_password: "", password: "" });
   const [loading, setLoading] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+  const [emailLocal, setEmailLocal] = useState<string>("");
+  const [codeLocal, setCodeLocal] = useState<string>("");
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -58,7 +60,9 @@ export default function Home() {
   const validatePasswordConfirm = (event: React.FocusEvent<HTMLInputElement>) => {
     const confirm_password = event.target.value;
     if (!confirm_password) {
-      event.target.setCustomValidity("Không bỏ trống");
+      event.target.setCustomValidity("Vui lòng không được bỏ trống");
+    } else if (formData.password !== confirm_password) {
+      event.target.setCustomValidity("Mật khẩu xác nhận không khớp");
     } else {
       event.target.setCustomValidity("");
     }
@@ -68,7 +72,7 @@ export default function Home() {
     event.preventDefault(); // Ngăn form submit theo cách truyền thống
     setLoading(true);
     const formData = new FormData(event.currentTarget);
-    await LoginForm(formData)
+    await LoginForm(formData, emailLocal, codeLocal)
       .then((res) => {
         setStatusMessage(res);
       })
@@ -77,6 +81,19 @@ export default function Home() {
       });
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const emailJSON = localStorage.getItem("email");
+      const codeJSON = localStorage.getItem("code");
+      if (emailJSON) {
+        setEmailLocal(emailJSON);
+      }
+      if (codeJSON) {
+        setCodeLocal(codeJSON);
+      }
+    }
+  }, []);
 
   return (
     <section>
@@ -140,12 +157,12 @@ export default function Home() {
               </div>
               <div className="form-group">
                 <label htmlFor="idEmail" className="title-form flex">
-                  <span>Password</span>
+                  <span>Confirm Password</span>
                   <div className="text-[#FF4D4F]">*</div>
                 </label>
                 <div className="flex items-center justify-between w-full relative">
                   <input
-                    type={showPassword ? "text" : "password"}
+                    type={showConfirmPassword ? "text" : "password"}
                     name="confirm_password"
                     className="form-control"
                     placeholder="Password"

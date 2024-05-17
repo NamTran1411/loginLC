@@ -1,8 +1,8 @@
 "use client";
 import BarLoader from "@/component/loading";
-import { emailPattern } from "@/utils/config";
-import { ArrowLeft } from "iconsax-react";
-import { usePathname } from "next/navigation";
+import { emailPattern, FormatTime } from "@/utils/config";
+import { ArrowLeft, Refresh2 } from "iconsax-react";
+import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import LoginForm from "./action";
 
@@ -12,11 +12,11 @@ interface FormDataSubmit {
 }
 
 export default function ConfirmEmail() {
-  const pathname = usePathname();
+  const router = useRouter();
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const [formData, setFormData] = useState<FormDataSubmit>({ email: "", password: "" });
   const [loading, setLoading] = useState<boolean>(false);
   const [inputs, setInputs] = useState<string[]>(Array(6).fill(""));
+  console.log("🚀 ~  inputs:", inputs);
 
   const [timeLeft, setTimeLeft] = useState<number>(300);
 
@@ -39,31 +39,33 @@ export default function ConfirmEmail() {
     }
   };
   const [statusMessage, setStatusMessage] = useState<string>("");
-
-  const validateEmail = (event: ChangeEvent<HTMLInputElement>) => {
-    const email = event.target.value;
-    if (!email) {
-      event.target.setCustomValidity("Không bỏ trống");
-    } else if (!emailPattern.test(email)) {
-      event.target.setCustomValidity("Sai định dạng");
-    } else {
-      event.target.setCustomValidity("");
+  const handleSetLocal = (data: FormData) => {
+    if (typeof window !== "undefined") {
+      let code = "";
+      for (let i = 1; i <= 6; i++) {
+        const value = data.get(`code-${i}`);
+        if (value !== null) {
+          code += value;
+        }
+      }
+      if (code !== "") {
+        localStorage.setItem("code", code);
+      }
     }
   };
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Ngăn form submit theo cách truyền thống
     setLoading(true);
     const formData = new FormData(event.currentTarget);
-    await LoginForm(formData)
-      .then((res) => {
-        setStatusMessage(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    console.log("🚀 ~  formData:", formData);
+    if (formData) {
+      handleSetLocal(formData);
+      router.push("/reset-password");
+    }
+
     setLoading(false);
   };
+
   useEffect(() => {
     if (timeLeft === 0) return;
 
@@ -120,12 +122,23 @@ export default function ConfirmEmail() {
               </div>
 
               <div className="status-error">{statusMessage}</div>
+
+              {!(timeLeft === 0) && (
+                <p className="text-[#FF3B30] text-[16px] font-medium text-center mt-[20px]">
+                  {` ${timeLeft === 0 ? "" : FormatTime(timeLeft) + "s"}`}
+                </p>
+              )}
               <button type="submit" className="button-submit" disabled={loading}>
-                {loading ? <BarLoader /> : <span>Đặt lại mật khẩu </span>}
+                {loading ? <BarLoader /> : <span>Xác nhận</span>}
               </button>
-              <div className="text-[#13C2C2] font-medium text-[16px] text-center mt-[20px]">
-                Gửi lại mã
-              </div>
+              {timeLeft === 0 && (
+                <div className="flex gap-3 justify-center items-center mt-[20px]">
+                  <Refresh2 size="24" color="#13C2C2" />
+                  <div className="text-[#13C2C2] font-medium text-[16px] text-center ">
+                    Gửi lại mã
+                  </div>
+                </div>
+              )}
             </div>
           </form>
         </div>

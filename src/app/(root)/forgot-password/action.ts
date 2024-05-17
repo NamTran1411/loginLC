@@ -3,33 +3,23 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function LoginForm(formData: FormData) {
+export default async function ForgotPasswordForm(formData: FormData) {
   const email = formData.get("email");
-  const password = formData.get("password");
   let status = 0;
   try {
-    const response: any = await fetch("https://auth.livechannel.vn//sign-in-cognito", {
+    const response: any = await fetch("https://auth.livechannel.vn/forgot-password", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email: email,
-        password: password,
       }),
     });
+
     if (response.status === 200) {
       status = response.status;
-      const data = await response.json();
-      const getCookie = data?.AuthenticationResult?.IdToken;
-      const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-      cookies().set("IdToken", getCookie, { expires, httpOnly: true });
-    } else if (response.status === 403) {
-      console.log("a");
-      const messageStatus = {
-        message: "Tài khoản hoặc mật khẩu không chính xác!",
-      };
-      return messageStatus?.message;
+      // const data = await response.json();
     } else {
       const statusText = response.json();
       console.log("🚀 ~  statusText:", response);
@@ -42,6 +32,6 @@ export default async function LoginForm(formData: FormData) {
     return { message: error };
   }
   if (status === 200) {
-    redirect("/dashboard");
+    redirect("/confirm-email");
   }
 }

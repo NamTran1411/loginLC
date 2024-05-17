@@ -3,9 +3,8 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function LoginForm(formData: FormData) {
-  const email = formData.get("email");
-  const password = formData.get("password");
+export default async function LoginForm(formData: FormData, emailLocal: string) {
+  const code = formData.get("code");
   let status = 0;
   try {
     const response: any = await fetch("https://auth.livechannel.vn//sign-in-cognito", {
@@ -14,8 +13,8 @@ export default async function LoginForm(formData: FormData) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email,
-        password: password,
+        email: emailLocal,
+        password: code,
       }),
     });
     if (response.status === 200) {

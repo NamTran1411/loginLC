@@ -4,16 +4,15 @@ import { emailPattern } from "@/utils/config";
 import { ArrowLeft } from "iconsax-react";
 import { usePathname } from "next/navigation";
 import { ChangeEvent, useState } from "react";
-import LoginForm from "./action";
+import ForgotPasswordForm from "./action";
 
 interface FormDataSubmit {
   email: string;
-  password: string;
 }
 
 export default function ForgotPassword() {
   const pathname = usePathname();
-  const [formData, setFormData] = useState<FormDataSubmit>({ email: "", password: "" });
+  const [formData, setFormData] = useState<FormDataSubmit>({ email: "" });
   const [loading, setLoading] = useState<boolean>(false);
 
   const [statusMessage, setStatusMessage] = useState<string>("");
@@ -21,7 +20,12 @@ export default function ForgotPassword() {
     event.target.setCustomValidity("");
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
-
+  const handleSetEmailLocal = (data: FormData) => {
+    const email = data.get("email");
+    if (typeof window !== "undefined") {
+      localStorage.setItem("email", `${email}`);
+    }
+  };
   const validateEmail = (event: ChangeEvent<HTMLInputElement>) => {
     const email = event.target.value;
     if (!email) {
@@ -34,11 +38,12 @@ export default function ForgotPassword() {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Ngăn form submit theo cách truyền thống
+    event.preventDefault();
     setLoading(true);
     const formData = new FormData(event.currentTarget);
-    await LoginForm(formData)
+    await ForgotPasswordForm(formData)
       .then((res) => {
+        handleSetEmailLocal(formData);
         setStatusMessage(res);
       })
       .catch((error) => {
@@ -94,7 +99,7 @@ export default function ForgotPassword() {
 
               <div className="status-error">{statusMessage}</div>
               <button type="submit" className="button-submit" disabled={loading}>
-                {loading ? <BarLoader /> : <span>Đặt lại mật khẩu </span>}
+                {loading ? <BarLoader /> : <span>Gửi mã xác nhận</span>}
               </button>
             </div>
           </form>

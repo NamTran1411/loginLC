@@ -1,38 +1,38 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function LoginForm(formData: FormData) {
-  const email = formData.get("email");
-  const password = formData.get("password");
+export default async function LoginForm(formData: FormData, email: string, code: string) {
+  const password = formData.get("confirm_password");
   let status = 0;
+  console.log(
+    JSON.stringify({
+      email: email,
+      code: code,
+      new_password: password,
+    })
+  );
   try {
-    const response: any = await fetch("https://auth.livechannel.vn//sign-in-cognito", {
+    const response = await fetch("https://auth.livechannel.vn/confirm-forgot-password", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email: email,
-        password: password,
+        code: code,
+        new_password: password,
       }),
     });
     if (response.status === 200) {
       status = response.status;
-      const data = await response.json();
-      const getCookie = data?.AuthenticationResult?.IdToken;
-      const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-      cookies().set("IdToken", getCookie, { expires, httpOnly: true });
     } else if (response.status === 403) {
-      console.log("a");
       const messageStatus = {
         message: "Tài khoản hoặc mật khẩu không chính xác!",
       };
       return messageStatus?.message;
     } else {
       const statusText = response.json();
-      console.log("🚀 ~  statusText:", response);
 
       let message = await statusText;
 
@@ -42,6 +42,6 @@ export default async function LoginForm(formData: FormData) {
     return { message: error };
   }
   if (status === 200) {
-    redirect("/dashboard");
+    redirect("/reset-success");
   }
 }
